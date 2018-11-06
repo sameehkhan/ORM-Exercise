@@ -1,7 +1,15 @@
+require_relative 'QuestionsDatabase'
+
 class Users
 
+
+  def self.all
+    data = QuestionsDBConnection.instance.execute("SELECT * FROM users")
+    data.map { |datum| Users.new(datum) }
+  end
+
 def self.find_by_id(id)
-  users_data = QuestionsDatabase.instance.execute(<<-SQL, id)
+  users_data = QuestionsDBConnection.instance.execute(<<-SQL, id)
   SELECT
     *
   FROM
@@ -9,12 +17,12 @@ def self.find_by_id(id)
   WHERE
     id = ?
   SQL
-  return nil unless users_data.length > 0
-  Users.new(users_data.first)
+  return nil unless users_data
+  users_data
 end
 
-def self.find_by_id(fname,lname)
-  users_data = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
+def self.find_by_name(fname,lname)
+  users_data = QuestionsDBConnection.instance.execute(<<-SQL, fname, lname)
   SELECT
     *
   FROM

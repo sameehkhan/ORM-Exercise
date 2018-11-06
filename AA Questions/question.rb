@@ -1,6 +1,6 @@
 class Question
   def self.find_by_id(id)
-    q = QuestionsDatabase.instance.execute(<<-SQL, id)
+    q = QuestionsDBConnection.instance.execute(<<-SQL, id)
     SELECT
       *
     FROM
@@ -8,9 +8,11 @@ class Question
     WHERE
       id = ?
     SQL
-    return nil unless q.length > 0
+    return nil unless q
     Question.new(q.first)
   end
+
+
 
 
   def initialize(options)

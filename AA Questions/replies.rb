@@ -1,22 +1,24 @@
 class Replies
   def self.find_by_id(id)
-    r = QuestionsDatabase.instance.execute(<<-SQL, id)
+    r = QuestionsDBConnection.instance.execute(<<-SQL, id)
     SELECT
       *
     FROM
-      users
+      replies
     WHERE
       id = ?
     SQL
-    return nil unless r.length > 0
+    return nil unless r
     Replies.new(r.first)
   end
 
 
 
   def initialize(options)
+
     @subject = options['subject']
     @body = options['body']
+
   end
 
 

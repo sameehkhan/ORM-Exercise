@@ -1,6 +1,6 @@
 class QuestionFollows
   def self.find_by_id(id)
-    qf = QuestionsDatabase.instance.execute(<<-SQL, id)
+    qf = QuestionsDBConnection.instance.execute(<<-SQL, id)
     SELECT
       *
     FROM
@@ -8,8 +8,8 @@ class QuestionFollows
     WHERE
       id = ?
     SQL
-    return nil unless qf.length > 0
-    QuestionFollows.new(qf.first)
+    return nil unless qf
+    QuestionsDBConnection.new(qf.first)
   end
 
 
