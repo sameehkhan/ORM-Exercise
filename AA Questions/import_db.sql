@@ -1,6 +1,10 @@
 PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS question_follows;
+DROP TABLE IF EXISTS question_likes;
+DROP TABLE IF EXISTS replies;
 
 CREATE TABLE users (
   id INTEGER PRIMARY KEY,
@@ -10,7 +14,6 @@ CREATE TABLE users (
 
 );
 
-DROP TABLE IF EXISTS questions;
 
 
 CREATE TABLE questions (
@@ -22,7 +25,6 @@ CREATE TABLE questions (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-DROP TABLE IF EXISTS question_follows;
 
 
 CREATE TABLE question_follows (
@@ -35,33 +37,30 @@ CREATE TABLE question_follows (
 
 );
 
-DROP TABLE IF EXISTS replies;
 
 
 CREATE TABLE replies (
   id INTEGER PRIMARY KEY,
   subject VARCHAR(255),
-  author_id INTEGER,
-  replier_id INTEGER,
+  question_id INTEGER,
+  parent_id INTEGER,
+  author_id INTEGER
   body VARCHAR(255),
 
-  FOREIGN KEY (replier_id) REFERENCES users(id),
-  FOREIGN KEY (author_id) REFERENCES user(id)
+  FOREIGN KEY (question_id) REFERENCES questions(id)
+  FOREIGN KEY (parent_id) REFERENCES replies(id),
+  FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
-
-DROP TABLE IF EXISTS question_likes;
 
 
 CREATE TABLE question_likes (
   id INTEGER PRIMARY KEY,
-  liker_id INTEGER,
-  ref_id INTEGER,
+  user_id INTEGER,
   question_id INTEGER,
 
-  FOREIGN KEY (liker_id) REFERENCES users(id),
-  FOREIGN KEY (ref_id) REFERENCES users(id),
-  FOREIGN KEY (question_id) REFERENCES question(id)
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (question_id) REFERENCES questions(id)
 );
 
 INSERT INTO
@@ -78,3 +77,13 @@ VALUES
   ('Ned Question', 'NED NED NED', 1),
   ('Kush Question', ' KUSH KUSH K',  2),
   ('Earl Question',  'MEOW MEOW M',  3);
+
+  INSERT INTO
+    question_follows(user_id, questions_id)
+  VALUES
+    (1, 1),
+    (2, 2),
+    (1, 3),
+    (3, 1),
+    (3, 2),
+    (2, 1);
