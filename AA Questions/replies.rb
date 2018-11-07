@@ -20,6 +20,32 @@ class Replies
     Replies.new(r.first)
   end
 
+  def self.find_by_user_id(author_id)
+    r = QuestionsDBConnection.instance.execute(<<-SQL, author_id)
+    SELECT
+      *
+    FROM
+      replies
+    WHERE
+      author_id = ?
+    SQL
+    return nil unless r.length > 0
+    r
+  end
+
+  def self.find_by_question_id(question_id)
+    r = QuestionsDBConnection.instance.execute(<<-SQL, question_id)
+    SELECT
+      *
+    FROM
+      replies
+    WHERE
+      question_id = ?
+    SQL
+    return nil unless r.length > 0
+    r
+  end
+
 
 
   def initialize(options)
@@ -29,9 +55,19 @@ class Replies
     @question_id = options['question_id']
     @parent_id = options['parent_id']
     @author_id = options['author_id']
-
   end
 
-
+  # def parent_reply
+  #   r = QuestionsDBConnection.instance.execute(<<-SQL)
+  #   SELECT
+  #     *
+  #   FROM
+  #     replies
+  #   WHERE
+  #     question_id = ?
+  #   SQL
+  #   return nil unless r.length > 0
+  #   r
+  # end
 
 end

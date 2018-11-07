@@ -1,4 +1,7 @@
 require_relative 'QuestionsDatabase'
+require_relative 'question'
+require_relative 'replies'
+
 
 class Users
 
@@ -17,8 +20,8 @@ def self.find_by_id(id)
   WHERE
     id = ?
   SQL
-  return nil unless users_data
-  Users.new(users_data)
+  return nil unless users_data.length > 0
+  users_data
 end
 
 def self.find_by_name(fname,lname)
@@ -38,6 +41,18 @@ def initialize(options)
   @fname = options['fname']
   @lname = options['lname']
 end
+
+
+
+def authored_questions
+ Questions.find_by_author(@id)
+
+end
+
+def authored_replies
+  Replies.find_by_user_id(@id)
+end
+
 
 
 end
