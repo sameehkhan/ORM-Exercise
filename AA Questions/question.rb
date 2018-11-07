@@ -1,4 +1,10 @@
-class Question
+class Questions
+
+  def self.all
+    data = QuestionsDBConnection.instance.execute("SELECT * FROM questions")
+    data.map { |datum| Questions.new(datum) }
+  end
+
   def self.find_by_id(id)
     q = QuestionsDBConnection.instance.execute(<<-SQL, id)
     SELECT

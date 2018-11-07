@@ -45,20 +45,13 @@ CREATE TABLE replies (
   body VARCHAR(255),
   question_id INTEGER,
   parent_id INTEGER,
-  author_id INTEGER
+  author_id INTEGER,
 
 
-  FOREIGN KEY (question_id) REFERENCES questions(id)
+  FOREIGN KEY (question_id) REFERENCES questions(id),
   FOREIGN KEY (parent_id) REFERENCES replies(id),
   FOREIGN KEY (author_id) REFERENCES users(id)
 );
-
-INSERT INTO
-  replies(subject, body, question_id, parent_id, author_id)
-VALUES
-  ("App Academy", "This is a good question", 1, 1, 3)
-  ("Hack Reactor", "What a waste", 2, 2, 3)
-  ("Hack Reactor", "meh", 1, 3, 1)
 
 
 
@@ -70,6 +63,21 @@ CREATE TABLE question_likes (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (question_id) REFERENCES questions(id)
 );
+
+
+INSERT INTO
+  users(fname,lname)
+VALUES
+  ('Ned', 'Question'),
+  ('Kush', 'Question'),
+  ('Earl', 'Question');
+
+INSERT INTO
+  questions(title,body,user_id)
+VALUES
+  ('Ned Question', 'NED NED NED', 1),
+  ('Kush Question', ' KUSH KUSH K',  2),
+  ('Earl Question',  'MEOW MEOW M',  3);
 
 INSERT INTO
   question_likes(user_id, question_id)
@@ -84,23 +92,7 @@ VALUES
 
 
 INSERT INTO
-  users(fname,lname)
-VALUES
-  ('Ned', 'Question'),
-  ('Kush', 'Question'),
-  ('Earl', 'Question');
-
-
-INSERT INTO
-  questions(title,body,user_id)
-VALUES
-  ('Ned Question', 'NED NED NED', 1),
-  ('Kush Question', ' KUSH KUSH K',  2),
-  ('Earl Question',  'MEOW MEOW M',  3);
-
-
-INSERT INTO
-  question_likes(user_id, questions_id)
+  question_follows(user_id, questions_id)
 VALUES
   (1, 1),
   (2, 2),
@@ -108,3 +100,10 @@ VALUES
   (3, 1),
   (3, 2),
   (2, 1);
+
+INSERT INTO
+  replies(subject, body, question_id, parent_id, author_id)
+VALUES
+  ("App Academy", "This is a good question", 1, 1, 3),
+  ("Hack Reactor", "What a waste", 2, 2, 3),
+  ("Hack Reactor", "meh", 1, 3, 1);

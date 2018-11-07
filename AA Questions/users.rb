@@ -18,7 +18,7 @@ def self.find_by_id(id)
     id = ?
   SQL
   return nil unless users_data
-  users_data
+  Users.new(users_data)
 end
 
 def self.find_by_name(fname,lname)
